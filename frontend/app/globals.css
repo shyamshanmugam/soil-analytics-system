@@ -1,0 +1,18 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; background: #f4f7f2; color: #183222; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 720px; margin: auto; padding: 24px; }
+.hero { padding: 42px 4px 24px; }
+.eyebrow { color: #3f7d4d; font-size: .8rem; font-weight: 700; letter-spacing: .12em; }
+h1 { font-size: clamp(2.3rem, 9vw, 4.4rem); line-height: 1; margin: 12px 0; }
+h2 { margin-top: 0; }
+.card { background: white; border-radius: 20px; box-shadow: 0 8px 24px #18322212; margin: 16px 0; padding: 24px; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+label { display: grid; gap: 6px; font-size: .9rem; font-weight: 600; }
+input { border: 1px solid #c7d4c7; border-radius: 10px; font: inherit; padding: 12px; width: 100%; }
+button { background: #2f7041; border: 0; border-radius: 10px; color: white; cursor: pointer; font: inherit; font-weight: 700; margin-top: 20px; padding: 13px 18px; width: 100%; }
+button:disabled { cursor: wait; opacity: .65; }
+.upload { margin-top: 18px; }
+.result strong { color: #2f7041; font-size: 3rem; }
+.note, .error { font-size: .85rem; }
+.error { color: #a52222; }
