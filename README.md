@@ -54,6 +54,7 @@ synthetic demonstrations and must not be presented as real agricultural results.
 - `backend/app/`: FastAPI routes, validation schemas, and service orchestration.
 - `src/`: reusable soil analysis, recommendations, and image-classification baseline.
 - `frontend/`: small Next.js farmer-facing interface.
+- `notebooks/`: supplied Week 3 dataset-cleaning and EfficientNetB0 Colab workflow.
 - `tests/`: API and domain tests.
 - `docs/`: audit, architecture, data flow, limitations, and run instructions.
 
