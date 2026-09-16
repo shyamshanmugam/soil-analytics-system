@@ -1,4 +1,3 @@
-# new
 # AI-Powered Soil Analytics System
 
 An internship-project starter for soil image classification and structured laboratory
