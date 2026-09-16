@@ -9,6 +9,7 @@ __pycache__/
 data/raw/
 data/processed/
 models/
+artifacts/
 *.pt
 *.onnx
 *.joblib

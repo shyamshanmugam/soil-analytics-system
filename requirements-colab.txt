@@ -1,0 +1,8 @@
+# Install these in Google Colab only for the supplied Week 3 workflow.
+pandas>=2.0
+matplotlib>=3.7
+Pillow>=10
+numpy>=1.24
+scikit-learn>=1.3
+tensorflow>=2.15
+jupyter>=1.0
