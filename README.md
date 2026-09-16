@@ -1,260 +1,862 @@
-# AI-Powered Soil Analytics and Advisory System
+# 🌱 AI-Powered Soil Analytics and Advisory System
 
-An Infosys Springboard Internship 7.0 project for soil-image classification and
-future agricultural advisory support.
+An AI-powered soil analytics system that combines **soil image analysis**, **structured soil-test data**, **machine learning**, and **explainable AI** to support soil assessment and agricultural decision-making.
 
-> **Current milestone:** Milestone 2 — AI/ML Soil Analysis Engine
-> **Current focus:** Week 3 — CNN Soil Image Analysis
+> **Project:** Infosys Springboard Internship 7.0
+> **Current Focus:** Milestone 2 — AI/ML Soil Analysis Engine
+> **Current Stage:** Week 3 — CNN Soil Image Analysis
 
-## Project overview
+---
 
-The planned system combines soil images with structured laboratory measurements
-to support soil assessment. The modalities remain separate:
+## 📌 Project Overview
 
-- Soil images can support soil-type classification.
-- Laboratory data is required for N, P, K, pH, moisture, and organic-matter
-  analysis.
-- An image classifier must not be presented as a laboratory nutrient predictor.
+Soil quality plays an important role in agricultural productivity. Traditional soil analysis generally depends on laboratory testing, while visual soil inspection can provide useful information about soil appearance and classification.
 
-The repository currently prioritizes the Week 3 image-classification pipeline.
-Structured-data modelling, explainability, hybrid fusion, deployment, and farmer
-advisory features are future milestones.
+This project aims to develop an AI-based system that combines:
 
-## Week 3 scope
+* 📷 Soil image analysis
+* 🧠 CNN-based deep learning
+* 📊 Structured soil-test data analysis
+* 🔍 Explainable AI
+* 🔗 Hybrid image + structured-data analysis
+* 🌱 Soil-health assessment
+* 💡 Agricultural recommendations
+* 🚀 API-based deployment
+* 📱 Progressive Web App (PWA)
 
-The canonical pipeline is available in:
+The system is being developed incrementally through multiple project milestones.
 
-- `notebooks/week3_cnn_pipeline.py`
-- `notebooks/week3_cnn_pipeline.ipynb`
+---
 
-It performs:
+# 🎯 Project Objectives
 
-1. Dataset verification and class normalization
-2. Corrupted-image detection
-3. Exact duplicate detection
-4. Class and split distribution reporting
-5. RGB conversion and `224x224` resizing
-6. Stratified train/validation preparation from training data only
-7. Test-set isolation
-8. EfficientNetB0 preprocessing
-9. Training augmentation
-10. Frozen-base transfer learning
-11. Upper-layer fine-tuning with a smaller learning rate
-12. Validation-based best-model selection
-13. Test prediction and evaluation
-14. Accuracy, macro precision, macro recall, and macro F1
-15. Classification report and confusion matrix
-16. Incorrect-prediction analysis
-17. Saved models and evaluation artifacts
+The major objectives are:
 
-### EfficientNetB0 preprocessing
+1. Collect and prepare soil-image datasets.
+2. Clean and preprocess soil images.
+3. Build a CNN-based soil-image classification model.
+4. Use transfer learning with EfficientNetB0.
+5. Evaluate the CNN using standard classification metrics.
+6. Build a structured soil-data machine-learning model.
+7. Implement explainable AI using Grad-CAM and SHAP.
+8. Combine image-based and structured-data predictions.
+9. Develop a soil-health assessment mechanism.
+10. Provide the ML functionality through an API.
+11. Develop a mobile-friendly PWA interface.
+12. Provide understandable soil-analysis results and recommendations.
 
-The TensorFlow/Keras EfficientNetB0 implementation used by the pipeline includes
-its own input rescaling and expects image tensors in the `0-255` range. The
-pipeline intentionally does **not** add another `Rescaling(1./255)` layer, which
-avoids double normalization.
+---
 
-### Fine-tuning
+# 🏗️ System Architecture
 
-Stage 1 freezes the pretrained EfficientNetB0 base and trains the classification
-head. Stage 2 unfreezes an upper portion of the base, keeps batch-normalization
-layers frozen for stability, and uses a learning rate of `1e-5`. The final model
-is selected using validation accuracy before the test set is evaluated.
-
-## Dataset
-
-The expected image classes are:
-
-| Class |
-| --- |
-| Red Soil |
-| Black Soil |
-| Alluvial Soil |
-| Clay Soil |
-
-The dataset is not committed to GitHub. The pipeline expects a source directory
-with this shape:
+The planned system architecture is:
 
 ```text
-soil_dataset/
-├── train_data/
-│   ├── Alluvial Soil/
-│   ├── Black Soil/
-│   ├── Clay Soil/
-│   └── Red Soil/
-└── test/
-    ├── Alluvial Soil/
-    ├── Black Soil/
-    ├── Clay Soil/
-    └── Red Soil/
+                    ┌──────────────────────┐
+                    │      User / Farmer   │
+                    └──────────┬───────────┘
+                               │
+                ┌──────────────┴──────────────┐
+                │                             │
+                ▼                             ▼
+       ┌─────────────────┐          ┌──────────────────┐
+       │   Soil Image    │          │ Structured Soil  │
+       │     Input       │          │   Test Data      │
+       └────────┬────────┘          └─────────┬────────┘
+                │                             │
+                ▼                             ▼
+       ┌─────────────────┐          ┌──────────────────┐
+       │ CNN / Efficient │          │ Structured ML    │
+       │    NetB0        │          │ Model            │
+       └────────┬────────┘          └─────────┬────────┘
+                │                             │
+                ▼                             ▼
+       ┌─────────────────┐          ┌──────────────────┐
+       │ Image Prediction│          │ Soil Parameter   │
+       │ + Confidence    │          │ Predictions      │
+       └────────┬────────┘          └─────────┬────────┘
+                │                             │
+                └──────────────┬──────────────┘
+                               ▼
+                     ┌────────────────────┐
+                     │  Hybrid Analysis   │
+                     └─────────┬──────────┘
+                               │
+                ┌──────────────┼──────────────┐
+                ▼              ▼              ▼
+          Soil Status      XAI Results    Health Score
+                │              │              │
+                └──────────────┼──────────────┘
+                               ▼
+                     ┌────────────────────┐
+                     │ Recommendations    │
+                     └────────────────────┘
 ```
 
-Any historical image count must be regenerated from the current dataset before
-being reported. The pipeline records verified, corrupted, duplicate, class, and
-split counts in its output reports.
+---
 
-## Artifacts
+# 📅 Project Milestones
 
-After a successful run, the output directory contains:
+## Milestone 1 — Data Ingestion & Preparation
+
+### Week 1 — Requirement & Dataset Collection
+
+Tasks include:
+
+* Understand project requirements.
+* Identify required soil parameters:
+
+  * Nitrogen (N)
+  * Phosphorus (P)
+  * Potassium (K)
+  * pH
+  * Moisture
+  * Organic Matter
+* Collect suitable soil-image datasets.
+* Identify reliable soil-test datasets.
+* Review dataset licenses and restrictions.
+* Analyze dataset size, classes, labels, and quality.
+* Set up project structure.
+* Set up Git/GitHub.
+* Set up Python/Google Colab.
+* Prepare dataset documentation.
+
+### Week 2 — Data Cleaning & Preprocessing
+
+#### Image Processing
+
+* Detect corrupted images.
+* Detect/remove duplicate images.
+* Verify image labels.
+* Resize images.
+* Apply appropriate preprocessing.
+* Apply augmentation.
+* Organize training, validation, and test data.
+
+#### Structured Data
+
+* Load CSV/Excel data.
+* Check missing values.
+* Check invalid values.
+* Identify outliers.
+* Remove duplicates.
+* Perform encoding/scaling where required.
+* Perform exploratory data analysis.
+
+#### Database
+
+Design PostgreSQL tables for:
+
+* Farms
+* Fields
+* Soil samples
+* Soil-test records
+
+---
+
+# 🧠 Milestone 2 — AI/ML Soil Analysis Engine
+
+## Week 3 — CNN Soil Image Analysis
+
+The current implementation focuses on classifying soil images using a CNN.
+
+### Dataset
+
+The current image dataset contains four soil classes:
+
+| Class         |
+| ------------- |
+| Red Soil      |
+| Black Soil    |
+| Alluvial Soil |
+| Clay Soil     |
+
+The dataset previously contained approximately **529 images** before duplicate removal.
+
+The dataset should always be rechecked from the current data before publishing final statistics.
+
+---
+
+# 🔬 Week 3 CNN Pipeline
+
+The current CNN pipeline follows:
+
+```text
+Raw Soil Images
+       ↓
+Dataset Verification
+       ↓
+Corrupted Image Detection
+       ↓
+Duplicate Detection
+       ↓
+Label Verification
+       ↓
+RGB Conversion
+       ↓
+Image Resizing
+       ↓
+Train / Validation / Test Split
+       ↓
+Image Augmentation
+       ↓
+EfficientNetB0 Transfer Learning
+       ↓
+Initial Training
+       ↓
+Fine-Tuning
+       ↓
+Prediction
+       ↓
+Evaluation
+       ↓
+Model Selection
+       ↓
+Saved CNN Model
+```
+
+---
+
+# 🧹 Image Data Preparation
+
+The preprocessing pipeline performs:
+
+### Corrupted Image Detection
+
+Images are checked to ensure they can be opened and processed correctly.
+
+### Duplicate Detection
+
+Exact duplicate files can be identified using file hashing.
+
+### Image Standardization
+
+Images are converted to a consistent RGB representation where required.
+
+### Image Resizing
+
+Images are resized to the input dimensions required by the selected CNN.
+
+Current EfficientNetB0 configuration:
+
+```text
+224 × 224 pixels
+```
+
+### Data Augmentation
+
+Training images can be augmented using transformations such as:
+
+* Random horizontal flip
+* Random rotation
+* Random zoom
+
+Augmentation is applied to training data rather than the final test set.
+
+---
+
+# 🧠 CNN Model
+
+The project currently uses:
+
+## EfficientNetB0
+
+EfficientNetB0 is used through transfer learning.
+
+The general architecture is:
+
+```text
+Input Image
+     ↓
+EfficientNetB0
+     ↓
+Global Average Pooling
+     ↓
+Dropout
+     ↓
+Dense Classification Layer
+     ↓
+Softmax
+     ↓
+Soil Class
+```
+
+---
+
+# 🔄 Transfer Learning
+
+Transfer learning uses a pretrained neural network as a starting point rather than training the entire network from random initialization.
+
+The workflow is:
+
+```text
+Pretrained EfficientNetB0
+          ↓
+Freeze pretrained layers
+          ↓
+Train classification head
+          ↓
+Evaluate
+          ↓
+Unfreeze selected layers
+          ↓
+Fine-tune with smaller learning rate
+          ↓
+Evaluate again
+```
+
+This approach is useful when the available domain-specific image dataset is relatively limited.
+
+---
+
+# ⚙️ Model Training
+
+The training pipeline includes:
+
+* Training dataset
+* Validation dataset
+* Optimizer
+* Loss function
+* Learning rate
+* Batch size
+* Training epochs
+* Early stopping
+* Model checkpointing
+* Learning-rate reduction
+
+The best model should be selected using validation performance rather than simply taking the last training epoch.
+
+---
+
+# 📊 Model Evaluation
+
+The CNN is evaluated using:
+
+### Accuracy
+
+Percentage of correctly classified test samples.
+
+### Precision
+
+Measures how many samples predicted as a particular class actually belong to that class.
+
+### Recall
+
+Measures how many actual samples of a class were correctly identified.
+
+### F1-Score
+
+Harmonic mean of precision and recall.
+
+### Confusion Matrix
+
+Shows the relationship between actual and predicted classes and helps identify which soil classes are being confused.
+
+---
+
+# 📈 Week 3 Results
+
+> ⚠️ These values must be replaced with the actual results produced by the final executed experiment.
+
+| Metric        |          Result |
+| ------------- | --------------: |
+| Test Accuracy | `[RUN RESULTS]` |
+| Precision     | `[RUN RESULTS]` |
+| Recall        | `[RUN RESULTS]` |
+| F1-Score      | `[RUN RESULTS]` |
+
+### Training Curves
+
+The project generates:
+
+* Training accuracy
+* Validation accuracy
+* Training loss
+* Validation loss
+
+These curves are used to investigate:
+
+* Model convergence
+* Overfitting
+* Underfitting
+* Training stability
+
+---
+
+# 🔎 Incorrect Prediction Analysis
+
+Incorrect test predictions are inspected to understand model limitations.
+
+The analysis includes:
+
+* Original image
+* Actual class
+* Predicted class
+* Prediction confidence
+
+Potential sources of errors are investigated rather than assuming a specific cause.
+
+---
+
+# 💾 Model Artifacts
+
+The project aims to save:
 
 ```text
 artifacts/
 ├── models/
-│   ├── stage1_best.keras
-│   ├── stage2_best.keras
-│   └── soil_cnn_final.keras
+│   ├── best_model.keras
+│   └── final_model.keras
+│
 ├── metrics/
-│   ├── test_metrics.json
-│   ├── classification_report.json
-│   └── confusion_matrix.csv
+│   ├── metrics.json
+│   └── classification_report.csv
+│
 ├── plots/
-│   ├── stage1_accuracy.png
-│   ├── stage1_loss.png
-│   ├── stage2_accuracy.png
-│   ├── stage2_loss.png
+│   ├── training_accuracy.png
+│   ├── training_loss.png
 │   └── confusion_matrix.png
+│
 ├── predictions/
-│   ├── incorrect_predictions.csv
-│   └── incorrect_predictions.png
+│   └── incorrect_predictions.csv
+│
 └── reports/
-    ├── dataset_verification.json
-    ├── split_counts.json
-    ├── class_names.json
-    ├── classification_report.txt
-    └── run_summary.json
+    └── week3_evaluation_report.md
 ```
 
-Precision, recall, and F1 use **macro averaging**, which gives every soil class
-equal weight. No result is written into this README until the training pipeline
-has actually been executed.
+Actual filenames may differ depending on the implementation.
 
-## Run in Google Colab
+---
 
-Install the Week 3 dependencies:
+# 📊 Week 4 — Structured Soil Data Model
 
-```python
-!pip install -r requirements-colab.txt
-```
+Week 4 will extend the project to structured soil-test data.
 
-Upload and extract the dataset so that `/content/soil_dataset` has the structure
-shown above, then run:
+Required parameters include:
 
-```python
-!python notebooks/week3_cnn_pipeline.py \
-  --dataset-root /content/soil_dataset \
-  --artifact-root /content/artifacts \
-  --stage1-epochs 20 \
-  --stage2-epochs 10
-```
+* Nitrogen (N)
+* Phosphorus (P)
+* Potassium (K)
+* pH
+* Moisture
+* Organic Matter
 
-Alternatively, open `notebooks/week3_cnn_pipeline.ipynb` and execute it from
-top to bottom. TensorFlow training requires a suitable Colab runtime and may
-take substantial time.
-
-## Run locally
-
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements-colab.txt
-python notebooks/week3_cnn_pipeline.py `
-  --dataset-root C:\path\to\soil_dataset `
-  --artifact-root artifacts
-```
-
-## Validation and leakage controls
-
-- Files are verified before preprocessing.
-- Exact duplicates are excluded from the working set.
-- The validation set is split only from `train_data`.
-- The source `test` set is never used for fitting or tuning.
-- Validation performance chooses between Stage 1 and Stage 2.
-- The selected model is evaluated on the test set only after selection.
-- The saved `.keras` model is loaded before final evaluation.
-
-See [`docs/week3-validation.md`](docs/week3-validation.md) for the detailed
-validation rules and artifact contract.
-
-## Current results
-
-No Week 3 training run has been executed in this repository environment because
-Python and TensorFlow were unavailable. Therefore, accuracy, precision, recall,
-F1-score, confusion-matrix values, and fine-tuning improvement are currently
-**not available** and must not be fabricated.
-
-## Repository structure
+The structured-data pipeline will include:
 
 ```text
-soil-analytics-system/
-├── README.md
-├── requirements-colab.txt
-├── data/
-├── notebooks/
-│   ├── week3_cnn_pipeline.py
-│   ├── week3_cnn_pipeline.ipynb
-│   ├── week3_soil_dataset_and_efficientnet.py
-│   └── week3_soil_dataset_and_efficientnet.ipynb
-├── src/
-├── backend/
-├── frontend/
-├── tests/
-└── docs/
+CSV / Excel
+     ↓
+Data Validation
+     ↓
+Missing Value Handling
+     ↓
+Invalid Value Detection
+     ↓
+Outlier Analysis
+     ↓
+Duplicate Removal
+     ↓
+Feature Selection
+     ↓
+Train/Test Split
+     ↓
+Gradient Boosting / XGBoost
+     ↓
+Evaluation
+     ↓
+Hyperparameter Tuning
+     ↓
+Saved Model
 ```
 
-The supplied original Week 3 files are retained as reference. New runs should
-use `week3_cnn_pipeline.py` or its matching notebook.
+The exact prediction target must be determined from the actual structured dataset.
 
-## Future milestones
+---
 
-These items are intentionally not part of the current Week 3 implementation:
+# 🔍 Explainable AI
 
-- Structured soil-data model using Gradient Boosting or XGBoost
-- SHAP explanations
-- Grad-CAM explanations
-- Hybrid image and structured-data fusion
-- Soil-health scoring
-- PostgreSQL persistence
-- FastAPI deployment
-- Frontend/PWA integration
-- Multilingual and voice features
+The planned project includes two explainability approaches.
 
-They must only be started after the Week 3 pipeline has been executed, reviewed,
-and documented with real results.
+## Grad-CAM
 
-## Limitations and disclaimer
+Grad-CAM will be applied to the CNN to visualize image regions contributing to a prediction.
 
-Image classification does not automatically provide laboratory measurements of
-N, P, K, pH, moisture, or organic matter. Model performance depends on dataset
-quality, class balance, geographic coverage, and real-world representativeness.
-Predictions are for academic and prototype use and do not replace laboratory
-soil testing or qualified agricultural advice.
+Expected output:
 
-## Security and data handling
+```text
+Original Soil Image
+        +
+Grad-CAM Heatmap
+        ↓
+Highlighted Important Regions
+```
 
-Do not commit API keys, passwords, database credentials, private tokens, or
-private datasets. Large datasets and generated model artifacts should remain
-outside Git unless deliberately reviewed and documented.
+Grad-CAM should be interpreted as a model-attribution visualization rather than proof of causal reasoning.
 
-## Project status
+## SHAP
 
-| Component | Status |
-| --- | --- |
-| Dataset verification | Implemented; requires execution on the real dataset |
-| Duplicate and corruption checks | Implemented; requires execution |
-| Image preprocessing | Implemented |
-| EfficientNetB0 | Implemented |
-| Transfer learning | Implemented |
-| Fine-tuning | Implemented; requires execution and comparison |
-| CNN evaluation | Implemented; requires execution |
-| Actual Week 3 metrics | Not available yet |
-| Structured-data model | Planned |
-| SHAP | Planned |
-| Grad-CAM | Planned |
-| Hybrid analysis | Planned |
-| Soil-health scoring | Planned |
-| PostgreSQL | Planned |
-| FastAPI/PWA | Planned |
+SHAP will be used for the structured-data model where appropriate.
 
-## Contributors
+It can provide:
 
-Infosys Springboard Internship 7.0 project team.
+* Feature importance
+* Global explanations
+* Individual prediction explanations
+
+Potential features include:
+
+* N
+* P
+* K
+* pH
+* Moisture
+* Organic Matter
+
+The actual feature list will depend on the final structured dataset.
+
+---
+
+# 🔗 Hybrid Analysis
+
+The planned hybrid system combines:
+
+```text
+CNN Image Prediction
+        +
+Structured ML Prediction
+        ↓
+Hybrid Analysis
+        ↓
+Combined Soil Assessment
+```
+
+The combination logic will be explicitly documented.
+
+The system should account for:
+
+* Available input modalities
+* Model confidence
+* Prediction outputs
+* Missing modalities
+
+No confidence value should be fabricated.
+
+---
+
+# 🌱 Soil Health Assessment
+
+A future component will derive a soil-health assessment from available soil information.
+
+The scoring methodology must be:
+
+* Transparent
+* Configurable
+* Documented
+* Clearly distinguished from scientifically validated laboratory measurements
+
+The system is not intended to replace professional laboratory soil testing.
+
+---
+
+# 🗄️ Database
+
+The planned PostgreSQL database will contain structures for:
+
+```text
+Farm
+  │
+  └── Field
+        │
+        └── Soil Sample
+               │
+               ├── Soil Test Results
+               ├── Image Sample
+               └── Predictions
+```
+
+Potential tables include:
+
+* `farms`
+* `fields`
+* `soil_samples`
+* `soil_test_results`
+* `image_samples`
+* `predictions`
+* `model_versions`
+
+Database credentials must never be committed to GitHub.
+
+---
+
+# 🚀 Backend
+
+A future FastAPI backend will expose the machine-learning functionality through APIs.
+
+Planned endpoints include:
+
+```text
+GET  /health
+
+POST /predict/image
+
+POST /predict/structured
+
+POST /predict/hybrid
+
+GET  /models
+```
+
+The exact API design may change during implementation.
+
+---
+
+# 📱 Frontend / PWA
+
+The planned PWA will provide a mobile-friendly interface where users can:
+
+* Upload soil images.
+* Enter soil-test parameters.
+* Request soil analysis.
+* View soil classification.
+* View nutrient status.
+* View confidence values.
+* View explainability results.
+* View soil-health assessment.
+* View recommendations.
+
+---
+
+# 🛠️ Technology Stack
+
+## Machine Learning
+
+* Python
+* TensorFlow / Keras
+* EfficientNetB0
+* Scikit-learn
+* XGBoost
+* SHAP
+
+## Data Processing
+
+* Pandas
+* NumPy
+* Pillow
+* Matplotlib
+
+## Backend
+
+* FastAPI
+* Pydantic
+
+## Database
+
+* PostgreSQL
+
+## Frontend
+
+* PWA-compatible web technologies
+
+## Development
+
+* Google Colab
+* Git
+* GitHub
+
+---
+
+# 📁 Project Structure
+
+The target project structure is:
+
+```text
+soil-analytics/
+│
+├── README.md
+├── .gitignore
+├── requirements.txt
+│
+├── data/
+│   ├── raw/
+│   ├── interim/
+│   ├── processed/
+│   └── structured/
+│
+├── notebooks/
+│   ├── week1_dataset_analysis.ipynb
+│   ├── week2_preprocessing.ipynb
+│   ├── week3_cnn.ipynb
+│   └── week4_structured_ml_xai.ipynb
+│
+├── src/
+│   ├── data/
+│   ├── preprocessing/
+│   ├── models/
+│   ├── evaluation/
+│   ├── explainability/
+│   ├── hybrid/
+│   └── utils/
+│
+├── models/
+│
+├── artifacts/
+│   ├── metrics/
+│   ├── plots/
+│   ├── predictions/
+│   └── reports/
+│
+├── database/
+│   └── schema/
+│
+├── backend/
+│   └── app/
+│
+├── frontend/
+│
+├── tests/
+│
+└── docs/
+    ├── dataset.md
+    ├── architecture.md
+    ├── week3.md
+    └── week4.md
+```
+
+---
+
+# 💻 Google Colab
+
+The CNN training pipeline can be executed using Google Colab.
+
+General workflow:
+
+```text
+Open Colab
+   ↓
+Upload dataset
+   ↓
+Install dependencies
+   ↓
+Run preprocessing
+   ↓
+Create dataset splits
+   ↓
+Build EfficientNetB0
+   ↓
+Train
+   ↓
+Fine-tune
+   ↓
+Evaluate
+   ↓
+Save artifacts
+```
+
+The notebook should be executed from beginning to end to reproduce the results.
+
+---
+
+# 🔐 Data & Security
+
+The repository should never contain:
+
+* API keys
+* Passwords
+* Database credentials
+* Private tokens
+* Personal credentials
+* Unnecessary private datasets
+
+Large datasets should normally be stored outside GitHub and documented through dataset-access instructions.
+
+---
+
+# ⚠️ Limitations
+
+Important limitations include:
+
+1. Image classification does not automatically provide laboratory measurements of N, P, K, pH, moisture, or organic matter.
+2. Model performance depends strongly on dataset quality and representativeness.
+3. A small or imbalanced dataset may limit generalization.
+4. Predictions should not be treated as a replacement for laboratory soil testing.
+5. Explainability methods such as Grad-CAM and SHAP describe model behavior but do not establish causality.
+6. Soil-health scores require clearly documented agronomic assumptions.
+7. Results should be validated with appropriate real-world soil-test data before practical agricultural deployment.
+
+---
+
+# 🔮 Future Improvements
+
+Possible future improvements include:
+
+* Larger and more diverse soil-image datasets.
+* More geographic locations and soil conditions.
+* Additional soil parameters.
+* Better calibration of prediction confidence.
+* More robust structured-data models.
+* Improved hybrid fusion.
+* Advanced explainability.
+* PostgreSQL integration.
+* FastAPI deployment.
+* PWA deployment.
+* Model monitoring.
+* Continuous evaluation with new field data.
+
+---
+
+# 📌 Current Development Status
+
+| Component                         | Status                        |
+| --------------------------------- | ----------------------------- |
+| Repository                        | ✅ Created                     |
+| Soil image dataset                | ✅ Available                   |
+| Image cleaning                    | ✅ Implemented                 |
+| Duplicate detection               | ✅ Implemented                 |
+| Image preprocessing               | ✅ Implemented                 |
+| Data augmentation                 | ✅ Implemented                 |
+| Train/validation/test preparation | ✅ Implemented                 |
+| EfficientNetB0                    | ✅ Implemented                 |
+| Transfer learning                 | ✅ Implemented                 |
+| CNN training                      | ✅ Implemented                 |
+| CNN evaluation                    | 🟡 Verify final execution     |
+| Fine-tuning                       | 🟡 To be verified/implemented |
+| Week 3 report                     | 🟡 In progress                |
+| Structured soil-data model        | ⏳ Planned                     |
+| XGBoost/Gradient Boosting         | ⏳ Planned                     |
+| SHAP                              | ⏳ Planned                     |
+| Grad-CAM                          | ⏳ Planned                     |
+| Hybrid analysis                   | ⏳ Planned                     |
+| Soil-health scoring               | ⏳ Planned                     |
+| PostgreSQL                        | ⏳ Planned                     |
+| FastAPI                           | ⏳ Planned                     |
+| PWA                               | ⏳ Planned                     |
+
+---
+
+# 👥 Contributors
+
+**Project Team**
+
+Infosys Springboard Internship 7.0
+
+Individual contributors and responsibilities should be added here as the project develops.
+
+---
+
+# 📚 Disclaimer
+
+This project is an academic/internship machine-learning project.
+
+The system is intended for research, learning, and prototype purposes.
+
+AI predictions should not be considered a substitute for professional laboratory soil testing or qualified agricultural advice.
+
+---
+
+# ⭐ Project Status
+
+**Current milestone:** Milestone 2 — AI/ML Soil Analysis Engine
+
+**Current focus:** Week 3 — CNN Soil Image Analysis
+
+The immediate objective is to complete and validate the CNN image-classification pipeline and produce a reproducible Week 3 evaluation report before moving to the Week 4 structured-data and explainability components.
